@@ -20,7 +20,7 @@ var ci = require('miniprogram-ci');
           return regeneratorRuntime.awrap(ci.preview({
             project: project,
             robot: 2,
-            desc: 'V1.0.0',
+            desc: 'master/V1.0.0',
             // 此备注将显示在“小程序助手”开发版列表中
             setting: {
               es6: true
