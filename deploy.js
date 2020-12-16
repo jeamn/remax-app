@@ -10,8 +10,8 @@ const ci = require('miniprogram-ci')
   try {
     const previewResult = await ci.preview({
       project,
-      robot: 1,
-      desc: 'master/V1.0.0', // 此备注将显示在“小程序助手”开发版列表中
+      robot: 2,
+      desc: 'dev/V1.0.0', // 此备注将显示在“小程序助手”开发版列表中
       setting: {
         es6: true,
       },
