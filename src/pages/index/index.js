@@ -13,7 +13,7 @@ export default () => {
         />
         <View className={styles.text}>
           编辑 <Text className={styles.path}>src/pages/index/index.js</Text>{' '}
-          开始
+          开----始
         </View>
       </View>
     </View>
