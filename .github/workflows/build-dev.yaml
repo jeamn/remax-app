@@ -24,7 +24,7 @@ jobs:
       run: yarn
 
     - name: Build weapp
-      run: yarn build
+      run: yarn build:dev
 
     - name: Generate private key for upload
       run: echo "$WXAPP_PRIVATE_KEY" > private.key
