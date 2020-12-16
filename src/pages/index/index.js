@@ -12,8 +12,7 @@ export default () => {
           alt="logo"
         />
         <View className={styles.text}>
-          编辑 <Text className={styles.path}>src/pages/index/index.js</Text>{' '}
-          开始
+          Hello World {process.env.HOTEL_APP_ENV}
         </View>
       </View>
     </View>

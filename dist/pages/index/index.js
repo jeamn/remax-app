@@ -1,50 +1,880 @@
 require('./../../runtime.js');
 require('./../../remax-vendors.js');
-(wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([[3],{
+(wx["webpackJsonp"] = wx["webpackJsonp"] || []).push([["pages/index/index"],{
 
-/***/ 30:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__(31);
+/* istanbul ignore next */
+// shim for using process in browser
+var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
 
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+  throw new Error('setTimeout has not been defined');
+}
+
+function defaultClearTimeout() {
+  throw new Error('clearTimeout has not been defined');
+}
+
+(function () {
+  try {
+    if (typeof setTimeout === 'function') {
+      cachedSetTimeout = setTimeout;
+    } else {
+      cachedSetTimeout = defaultSetTimout;
+    }
+  } catch (e) {
+    cachedSetTimeout = defaultSetTimout;
+  }
+
+  try {
+    if (typeof clearTimeout === 'function') {
+      cachedClearTimeout = clearTimeout;
+    } else {
+      cachedClearTimeout = defaultClearTimeout;
+    }
+  } catch (e) {
+    cachedClearTimeout = defaultClearTimeout;
+  }
+})();
+
+function runTimeout(fun) {
+  if (cachedSetTimeout === setTimeout) {
+    //normal enviroments in sane situations
+    return setTimeout(fun, 0);
+  } // if setTimeout wasn't available but was latter defined
+
+
+  if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    cachedSetTimeout = setTimeout;
+    return setTimeout(fun, 0);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedSetTimeout(fun, 0);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+      return cachedSetTimeout.call(null, fun, 0);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+      return cachedSetTimeout.call(this, fun, 0);
+    }
+  }
+}
+
+function runClearTimeout(marker) {
+  if (cachedClearTimeout === clearTimeout) {
+    //normal enviroments in sane situations
+    return clearTimeout(marker);
+  } // if clearTimeout wasn't available but was latter defined
+
+
+  if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+    cachedClearTimeout = clearTimeout;
+    return clearTimeout(marker);
+  }
+
+  try {
+    // when when somebody has screwed with setTimeout but no I.E. maddness
+    return cachedClearTimeout(marker);
+  } catch (e) {
+    try {
+      // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+      return cachedClearTimeout.call(null, marker);
+    } catch (e) {
+      // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+      // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+      return cachedClearTimeout.call(this, marker);
+    }
+  }
+}
+
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+  if (!draining || !currentQueue) {
+    return;
+  }
+
+  draining = false;
+
+  if (currentQueue.length) {
+    queue = currentQueue.concat(queue);
+  } else {
+    queueIndex = -1;
+  }
+
+  if (queue.length) {
+    drainQueue();
+  }
+}
+
+function drainQueue() {
+  if (draining) {
+    return;
+  }
+
+  var timeout = runTimeout(cleanUpNextTick);
+  draining = true;
+  var len = queue.length;
+
+  while (len) {
+    currentQueue = queue;
+    queue = [];
+
+    while (++queueIndex < len) {
+      if (currentQueue) {
+        currentQueue[queueIndex].run();
+      }
+    }
+
+    queueIndex = -1;
+    len = queue.length;
+  }
+
+  currentQueue = null;
+  draining = false;
+  runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+  var args = new Array(arguments.length - 1);
+
+  if (arguments.length > 1) {
+    for (var i = 1; i < arguments.length; i++) {
+      args[i - 1] = arguments[i];
+    }
+  }
+
+  queue.push(new Item(fun, args));
+
+  if (queue.length === 1 && !draining) {
+    runTimeout(drainQueue);
+  }
+}; // v8 likes predictible objects
+
+
+function Item(fun, array) {
+  this.fun = fun;
+  this.array = array;
+}
+
+Item.prototype.run = function () {
+  this.fun.apply(null, this.array);
+};
+
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+  return [];
+};
+
+process.binding = function (name) {
+  throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+  return '/';
+};
+
+process.chdir = function (dir) {
+  throw new Error('process.chdir is not supported');
+};
+
+process.umask = function () {
+  return 0;
+};
 
 /***/ }),
 
-/***/ 31:
+/***/ "./node_modules/remax/wechat.js":
+/*!**************************************!*\
+  !*** ./node_modules/remax/wechat.js ***!
+  \**************************************/
+/*! exports provided: View, Input, Textarea, Video, Swiper, ScrollView, SwiperItem, MovableView, MovableArea, CoverView, CoverImage, Icon, Text, RichText, Progress, Button, CheckboxGroup, Checkbox, Form, Label, Picker, PickerView, PickerViewColumn, RadioGroup, Radio, Slider, Switch, Navigator, Image, LivePlayer, LivePusher, Map, Canvas, OpenData, OfficialAccount, Editor, Audio, Ad, WebView, FunctionalPageNavigator, Camera, canIUse, base64ToArrayBuffer, arrayBufferToBase64, getSystemInfoSync, getSystemInfo, getUpdateManager, getLaunchOptionsSync, onPageNotFound, onError, onAudioInterruptionEnd, onAppShow, onAppHide, offPageNotFound, offError, offAudioInterruptionEnd, offAudioInterruptionBegin, offAppShow, offAppHide, setEnableDebug, getLogManager, switchTab, reLaunch, redirectTo, navigateTo, navigateBack, showToast, showModal, showLoading, showActionSheet, hideToast, hideLoading, showNavigationBarLoading, setNavigationBarTitle, setNavigationBarColor, hideNavigationBarLoading, setBackgroundTextStyle, setBackgroundColor, showTabBarRedDot, showTabBar, setTabBarStyle, setTabBarItem, setTabBarBadge, removeTabBarBadge, hideTabBarRedDot, hideTabBar, loadFontFace, stopPullDownRefresh, startPullDownRefresh, pageScrollTo, createAnimation, setTopBarText, nextTick, getMenuButtonBoundingClientRect, onWindowResize, offWindowResize, onKeyboardHeightChange, offKeyboardHeightChange, getSelectedTextRange, request, downloadFile, uploadFile, sendSocketMessage, onSocketOpen, onSocketMessage, onSocketError, onSocketClose, connectSocket, closeSocket, stopLocalServiceDiscovery, startLocalServiceDiscovery, onLocalServiceResolveFail, onLocalServiceLost, onLocalServiceFound, onLocalServiceDiscoveryStop, offLocalServiceResolveFail, offLocalServiceLost, offLocalServiceFound, offLocalServiceDiscoveryStop, createUDPSocket, setStorageSync, setStorage, removeStorageSync, removeStorage, getStorageSync, getStorageInfoSync, getStorageInfo, getStorage, clearStorageSync, clearStorage, createMapContext, saveImageToPhotosAlbum, previewImage, getImageInfo, compressImage, chooseMessageFile, chooseImage, saveVideoToPhotosAlbum, createVideoContext, chooseVideo, chooseMedia, stopVoice, setInnerAudioOption, playVoice, pauseVoice, getAvailableAudioSources, createInnerAudioContext, createAudioContext, stopBackgroundAudio, seekBackgroundAudio, playBackgroundAudio, pauseBackgroundAudio, onBackgroundAudioStop, onBackgroundAudioPlay, onBackgroundAudioPause, getBackgroundAudioPlayerState, getBackgroundAudioManager, createLivePusherContext, createLivePlayerContext, stopRecord, startRecord, getRecorderManager, createCameraContext, stopLocationUpdate, startLocationUpdateBackground, startLocationUpdate, openLocation, onLocationChange, getLocation, chooseLocation, updateShareMenu, showShareMenu, hideShareMenu, getShareInfo, createOffscreenCanvas, createCanvasContext, canvasToTempFilePath, canvasPutImageData, canvasGetImageData, saveFile, removeSavedFile, openDocument, getSavedFileList, getSavedFileInfo, getFileSystemManager, getFileInfo, login, checkSession, navigateToMiniProgram, navigateBackMiniProgram, getAccountInfoSync, getUserInfo, reportMonitor, reportAnalytics, requestPayment, authorize, openSetting, getSetting, chooseAddress, openCard, addCard, chooseInvoiceTitle, chooseInvoice, startSoterAuthentication, checkIsSupportSoterAuthentication, checkIsSoterEnrolledInDevice, getWeRunData, stopBeaconDiscovery, startBeaconDiscovery, onBeaconUpdate, onBeaconServiceChange, getBeacons, stopWifi, startWifi, setWifiList, onWifiConnected, onGetWifiList, getWifiList, getConnectedWifi, connectWifi, addPhoneContact, writeBLECharacteristicValue, readBLECharacteristicValue, onBLEConnectionStateChange, onBLECharacteristicValueChange, notifyBLECharacteristicValueChange, getBLEDeviceServices, getBLEDeviceCharacteristics, createBLEConnection, closeBLEConnection, stopBluetoothDevicesDiscovery, startBluetoothDevicesDiscovery, openBluetoothAdapter, onBluetoothDeviceFound, onBluetoothAdapterStateChange, getConnectedBluetoothDevices, getBluetoothDevices, getBluetoothAdapterState, closeBluetoothAdapter, getBatteryInfoSync, getBatteryInfo, setClipboardData, getClipboardData, stopHCE, startHCE, sendHCEMessage, onHCEMessage, getHCEState, onNetworkStatusChange, getNetworkType, setScreenBrightness, setKeepScreenOn, onUserCaptureScreen, getScreenBrightness, makePhoneCall, stopAccelerometer, startAccelerometer, onAccelerometerChange, stopCompass, startCompass, onCompassChange, stopDeviceMotionListening, startDeviceMotionListening, onDeviceMotionChange, stopGyroscope, startGyroscope, onGyroscopeChange, onMemoryWarning, scanCode, vibrateShort, vibrateLong, createWorker, getExtConfigSync, getExtConfig, createSelectorQuery, createIntersectionObserver, createRewardedVideoAd, createInterstitialAd, cloud, requestSubscribeMessage, hideHomeButton, getRealtimeLogManager, hideKeyboard */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-// ESM COMPAT FLAG
+/* istanbul ignore next */
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _remax_wechat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @remax/wechat */ "./node_modules/@remax/wechat/esm/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "View", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["View"]; });
 
-// EXTERNAL MODULE: ./node_modules/@remax/runtime/esm/index.js + 25 modules
-var esm = __webpack_require__(1);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Input", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Input"]; });
 
-// EXTERNAL MODULE: ./node_modules/react/index.js
-var react = __webpack_require__(2);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Textarea", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Textarea"]; });
 
-// EXTERNAL MODULE: ./node_modules/@remax/wechat/esm/index.js + 45 modules
-var wechat_esm = __webpack_require__(3);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Video", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Video"]; });
 
-// CONCATENATED MODULE: ./node_modules/remax/wechat.js
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Swiper", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Swiper"]; });
 
-// EXTERNAL MODULE: ./src/pages/index/index.css?modules
-var indexmodules = __webpack_require__(5);
-var indexmodules_default = /*#__PURE__*/__webpack_require__.n(indexmodules);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ScrollView", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["ScrollView"]; });
 
-// CONCATENATED MODULE: ./src/pages/index/index.js
-/* harmony default export */ var index = (function(){return/*#__PURE__*/react["createElement"](wechat_esm["c" /* View */],{className:indexmodules_default.a.app},/*#__PURE__*/react["createElement"](wechat_esm["c" /* View */],{className:indexmodules_default.a.header},/*#__PURE__*/react["createElement"](wechat_esm["a" /* Image */],{src:"https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*OGyZSI087zkAAAAAAAAAAABkARQnAQ",className:indexmodules_default.a.logo,alt:"logo"}),/*#__PURE__*/react["createElement"](wechat_esm["c" /* View */],{className:indexmodules_default.a.text},"\u7F16\u8F91 ",/*#__PURE__*/react["createElement"](wechat_esm["b" /* Text */],{className:indexmodules_default.a.path},"src/pages/index/index.js"),' ',"\u5F00\u59CB")));});
-// CONCATENATED MODULE: ./src/pages/index/index.entry.js
-Page(Object(esm["e" /* createPageConfig */])(index,'pages/index/index'));
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwiperItem", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["SwiperItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MovableView", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["MovableView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "MovableArea", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["MovableArea"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CoverView", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["CoverView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CoverImage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["CoverImage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Icon", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Icon"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Text", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Text"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RichText", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["RichText"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Progress", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Progress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Button", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Button"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CheckboxGroup", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["CheckboxGroup"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Checkbox", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Checkbox"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Form", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Form"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Label", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Label"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Picker", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Picker"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PickerView", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["PickerView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PickerViewColumn", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["PickerViewColumn"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RadioGroup", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["RadioGroup"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Radio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Radio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Slider", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Slider"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Switch"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Navigator", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Navigator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Image", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Image"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LivePlayer", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["LivePlayer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "LivePusher", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["LivePusher"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Map", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Map"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Canvas", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Canvas"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OpenData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["OpenData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "OfficialAccount", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["OfficialAccount"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Editor", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Editor"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Audio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Audio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Ad", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Ad"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "WebView", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["WebView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FunctionalPageNavigator", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["FunctionalPageNavigator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["Camera"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canIUse", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["canIUse"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "base64ToArrayBuffer", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["base64ToArrayBuffer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "arrayBufferToBase64", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["arrayBufferToBase64"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSystemInfoSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSystemInfoSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSystemInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSystemInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getUpdateManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getUpdateManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLaunchOptionsSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getLaunchOptionsSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onPageNotFound", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onPageNotFound"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onError", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onAudioInterruptionEnd", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onAudioInterruptionEnd"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onAppShow", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onAppShow"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onAppHide", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onAppHide"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offPageNotFound", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offPageNotFound"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offError", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offAudioInterruptionEnd", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offAudioInterruptionEnd"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offAudioInterruptionBegin", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offAudioInterruptionBegin"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offAppShow", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offAppShow"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offAppHide", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offAppHide"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setEnableDebug", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setEnableDebug"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLogManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getLogManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "switchTab", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["switchTab"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "reLaunch", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["reLaunch"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "redirectTo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["redirectTo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "navigateTo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["navigateTo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "navigateBack", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["navigateBack"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showToast", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showToast"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showModal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showLoading", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showLoading"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showActionSheet", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showActionSheet"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideToast", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideToast"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideLoading", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideLoading"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showNavigationBarLoading", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showNavigationBarLoading"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setNavigationBarTitle", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setNavigationBarTitle"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setNavigationBarColor", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setNavigationBarColor"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideNavigationBarLoading", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideNavigationBarLoading"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBackgroundTextStyle", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setBackgroundTextStyle"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBackgroundColor", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setBackgroundColor"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showTabBarRedDot", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showTabBarRedDot"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showTabBar", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showTabBar"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTabBarStyle", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setTabBarStyle"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTabBarItem", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setTabBarItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTabBarBadge", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setTabBarBadge"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeTabBarBadge", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["removeTabBarBadge"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideTabBarRedDot", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideTabBarRedDot"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideTabBar", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideTabBar"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadFontFace", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["loadFontFace"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopPullDownRefresh", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopPullDownRefresh"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startPullDownRefresh", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startPullDownRefresh"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pageScrollTo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["pageScrollTo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAnimation", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createAnimation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setTopBarText", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setTopBarText"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "nextTick", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["nextTick"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getMenuButtonBoundingClientRect", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getMenuButtonBoundingClientRect"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onWindowResize", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onWindowResize"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offWindowResize", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offWindowResize"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onKeyboardHeightChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onKeyboardHeightChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offKeyboardHeightChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offKeyboardHeightChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSelectedTextRange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSelectedTextRange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "request", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["request"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "downloadFile", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["downloadFile"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "uploadFile", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["uploadFile"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sendSocketMessage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["sendSocketMessage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onSocketOpen", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onSocketOpen"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onSocketMessage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onSocketMessage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onSocketError", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onSocketError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onSocketClose", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onSocketClose"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "connectSocket", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["connectSocket"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "closeSocket", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["closeSocket"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopLocalServiceDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopLocalServiceDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startLocalServiceDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startLocalServiceDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onLocalServiceResolveFail", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onLocalServiceResolveFail"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onLocalServiceLost", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onLocalServiceLost"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onLocalServiceFound", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onLocalServiceFound"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onLocalServiceDiscoveryStop", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onLocalServiceDiscoveryStop"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offLocalServiceResolveFail", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offLocalServiceResolveFail"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offLocalServiceLost", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offLocalServiceLost"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offLocalServiceFound", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offLocalServiceFound"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "offLocalServiceDiscoveryStop", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["offLocalServiceDiscoveryStop"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createUDPSocket", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createUDPSocket"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setStorageSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setStorageSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setStorage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setStorage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeStorageSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["removeStorageSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeStorage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["removeStorage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStorageSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getStorageSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStorageInfoSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getStorageInfoSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStorageInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getStorageInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getStorage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getStorage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "clearStorageSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["clearStorageSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "clearStorage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["clearStorage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createMapContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createMapContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "saveImageToPhotosAlbum", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["saveImageToPhotosAlbum"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "previewImage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["previewImage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getImageInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getImageInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "compressImage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["compressImage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseMessageFile", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseMessageFile"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseImage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseImage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "saveVideoToPhotosAlbum", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["saveVideoToPhotosAlbum"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createVideoContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createVideoContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseVideo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseVideo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseMedia", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseMedia"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopVoice", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopVoice"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setInnerAudioOption", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setInnerAudioOption"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "playVoice", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["playVoice"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pauseVoice", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["pauseVoice"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAvailableAudioSources", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getAvailableAudioSources"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createInnerAudioContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createInnerAudioContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createAudioContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createAudioContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopBackgroundAudio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopBackgroundAudio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "seekBackgroundAudio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["seekBackgroundAudio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "playBackgroundAudio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["playBackgroundAudio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "pauseBackgroundAudio", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["pauseBackgroundAudio"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBackgroundAudioStop", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBackgroundAudioStop"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBackgroundAudioPlay", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBackgroundAudioPlay"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBackgroundAudioPause", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBackgroundAudioPause"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBackgroundAudioPlayerState", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBackgroundAudioPlayerState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBackgroundAudioManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBackgroundAudioManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createLivePusherContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createLivePusherContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createLivePlayerContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createLivePlayerContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopRecord", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopRecord"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startRecord", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startRecord"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getRecorderManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getRecorderManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createCameraContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createCameraContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopLocationUpdate", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopLocationUpdate"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startLocationUpdateBackground", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startLocationUpdateBackground"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startLocationUpdate", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startLocationUpdate"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openLocation", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["openLocation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onLocationChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onLocationChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getLocation", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getLocation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseLocation", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseLocation"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateShareMenu", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["updateShareMenu"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showShareMenu", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["showShareMenu"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideShareMenu", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideShareMenu"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getShareInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getShareInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createOffscreenCanvas", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createOffscreenCanvas"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createCanvasContext", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createCanvasContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canvasToTempFilePath", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["canvasToTempFilePath"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canvasPutImageData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["canvasPutImageData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "canvasGetImageData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["canvasGetImageData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "saveFile", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["saveFile"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeSavedFile", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["removeSavedFile"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openDocument", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["openDocument"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSavedFileList", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSavedFileList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSavedFileInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSavedFileInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFileSystemManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getFileSystemManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getFileInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getFileInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "login", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["login"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkSession", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["checkSession"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "navigateToMiniProgram", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["navigateToMiniProgram"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "navigateBackMiniProgram", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["navigateBackMiniProgram"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getAccountInfoSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getAccountInfoSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getUserInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getUserInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "reportMonitor", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["reportMonitor"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "reportAnalytics", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["reportAnalytics"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "requestPayment", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["requestPayment"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "authorize", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["authorize"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openSetting", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["openSetting"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getSetting", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getSetting"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseAddress", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseAddress"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openCard", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["openCard"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addCard", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["addCard"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseInvoiceTitle", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseInvoiceTitle"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "chooseInvoice", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["chooseInvoice"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startSoterAuthentication", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startSoterAuthentication"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkIsSupportSoterAuthentication", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["checkIsSupportSoterAuthentication"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "checkIsSoterEnrolledInDevice", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["checkIsSoterEnrolledInDevice"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getWeRunData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getWeRunData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopBeaconDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopBeaconDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startBeaconDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startBeaconDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBeaconUpdate", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBeaconUpdate"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBeaconServiceChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBeaconServiceChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBeacons", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBeacons"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopWifi", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopWifi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startWifi", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startWifi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setWifiList", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setWifiList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onWifiConnected", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onWifiConnected"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onGetWifiList", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onGetWifiList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getWifiList", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getWifiList"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getConnectedWifi", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getConnectedWifi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "connectWifi", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["connectWifi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "addPhoneContact", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["addPhoneContact"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "writeBLECharacteristicValue", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["writeBLECharacteristicValue"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "readBLECharacteristicValue", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["readBLECharacteristicValue"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBLEConnectionStateChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBLEConnectionStateChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBLECharacteristicValueChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBLECharacteristicValueChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "notifyBLECharacteristicValueChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["notifyBLECharacteristicValueChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBLEDeviceServices", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBLEDeviceServices"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBLEDeviceCharacteristics", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBLEDeviceCharacteristics"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createBLEConnection", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createBLEConnection"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "closeBLEConnection", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["closeBLEConnection"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopBluetoothDevicesDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopBluetoothDevicesDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startBluetoothDevicesDiscovery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startBluetoothDevicesDiscovery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "openBluetoothAdapter", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["openBluetoothAdapter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBluetoothDeviceFound", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBluetoothDeviceFound"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onBluetoothAdapterStateChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onBluetoothAdapterStateChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getConnectedBluetoothDevices", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getConnectedBluetoothDevices"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBluetoothDevices", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBluetoothDevices"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBluetoothAdapterState", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBluetoothAdapterState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "closeBluetoothAdapter", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["closeBluetoothAdapter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBatteryInfoSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBatteryInfoSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBatteryInfo", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getBatteryInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setClipboardData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setClipboardData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getClipboardData", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getClipboardData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopHCE", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopHCE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startHCE", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startHCE"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "sendHCEMessage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["sendHCEMessage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onHCEMessage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onHCEMessage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getHCEState", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getHCEState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onNetworkStatusChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onNetworkStatusChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getNetworkType", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getNetworkType"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setScreenBrightness", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setScreenBrightness"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setKeepScreenOn", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["setKeepScreenOn"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onUserCaptureScreen", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onUserCaptureScreen"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getScreenBrightness", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getScreenBrightness"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "makePhoneCall", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["makePhoneCall"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopAccelerometer", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopAccelerometer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startAccelerometer", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startAccelerometer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onAccelerometerChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onAccelerometerChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopCompass", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopCompass"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startCompass", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startCompass"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onCompassChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onCompassChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopDeviceMotionListening", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopDeviceMotionListening"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startDeviceMotionListening", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startDeviceMotionListening"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onDeviceMotionChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onDeviceMotionChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "stopGyroscope", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["stopGyroscope"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startGyroscope", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["startGyroscope"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onGyroscopeChange", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onGyroscopeChange"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "onMemoryWarning", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["onMemoryWarning"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "scanCode", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["scanCode"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "vibrateShort", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["vibrateShort"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "vibrateLong", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["vibrateLong"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createWorker", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createWorker"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getExtConfigSync", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getExtConfigSync"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getExtConfig", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getExtConfig"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createSelectorQuery", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createSelectorQuery"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createIntersectionObserver", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createIntersectionObserver"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createRewardedVideoAd", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createRewardedVideoAd"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createInterstitialAd", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["createInterstitialAd"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cloud", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["cloud"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "requestSubscribeMessage", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["requestSubscribeMessage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideHomeButton", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideHomeButton"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getRealtimeLogManager", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["getRealtimeLogManager"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hideKeyboard", function() { return _remax_wechat__WEBPACK_IMPORTED_MODULE_0__["hideKeyboard"]; });
+
+
 
 /***/ }),
 
-/***/ 5:
+/***/ "./src/pages/index/index.css?modules":
+/*!*******************************************!*\
+  !*** ./src/pages/index/index.css?modules ***!
+  \*******************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
 module.exports = {"app":"app___2lhPP","logo":"logo___Al4Xb","logo-spin":"logo-spin___3_EwH","text":"text___XEtZ5","header":"header___3qOk9"};
 
+/***/ }),
+
+/***/ "./src/pages/index/index.entry.js":
+/*!****************************************!*\
+  !*** ./src/pages/index/index.entry.js ***!
+  \****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _remax_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @remax/runtime */ "./node_modules/@remax/runtime/esm/index.js");
+/* harmony import */ var _index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.js */ "./src/pages/index/index.js");
+
+
+Page(Object(_remax_runtime__WEBPACK_IMPORTED_MODULE_0__["createPageConfig"])(_index_js__WEBPACK_IMPORTED_MODULE_1__["default"], 'pages/index/index'));
+
+/***/ }),
+
+/***/ "./src/pages/index/index.js":
+/*!**********************************!*\
+  !*** ./src/pages/index/index.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var remax_wechat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! remax/wechat */ "./node_modules/remax/wechat.js");
+/* harmony import */ var _index_css_modules__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index.css?modules */ "./src/pages/index/index.css?modules");
+/* harmony import */ var _index_css_modules__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_index_css_modules__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](remax_wechat__WEBPACK_IMPORTED_MODULE_1__["View"], {
+    className: _index_css_modules__WEBPACK_IMPORTED_MODULE_2___default.a.app
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](remax_wechat__WEBPACK_IMPORTED_MODULE_1__["View"], {
+    className: _index_css_modules__WEBPACK_IMPORTED_MODULE_2___default.a.header
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](remax_wechat__WEBPACK_IMPORTED_MODULE_1__["Image"], {
+    src: "https://gw.alipayobjects.com/mdn/rms_b5fcc5/afts/img/A*OGyZSI087zkAAAAAAAAAAABkARQnAQ",
+    className: _index_css_modules__WEBPACK_IMPORTED_MODULE_2___default.a.logo,
+    alt: "logo"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](remax_wechat__WEBPACK_IMPORTED_MODULE_1__["View"], {
+    className: _index_css_modules__WEBPACK_IMPORTED_MODULE_2___default.a.text
+  }, "Hello World ", process.env.HOTEL_APP_ENV)));
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ 1:
+/*!**********************************************!*\
+  !*** multi ./src/pages/index/index.entry.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/jeamn/Desktop/my-app/src/pages/index/index.entry.js */"./src/pages/index/index.entry.js");
+
+
 /***/ })
 
-},[[30,1,0]]]);
+},[[1,"runtime","remax-vendors"]]]);
