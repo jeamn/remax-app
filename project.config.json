@@ -1,7 +1,6 @@
 {
   "miniprogramRoot": "dist/",
   "appid": "wxc326b824cc3d1077",
-  "privateKeyPath": "./private.wxc326b824cc3d1077.key",
   "setting": {
     "urlCheck": false,
     "es6": false,

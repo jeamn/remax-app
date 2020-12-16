@@ -32,6 +32,7 @@ jobs:
       run: echo "$WXAPP_PRIVATE_KEY" > private.key
       env:
         WXAPP_PRIVATE_KEY: ${{ secrets.WXAPP_PRIVATE_KEY }}
-        
+
     - name: Preview to generate QR code
-      run: yarn miniprogram-ci preview --pp ./dist/ --pkp ./private.key --appid wxc326b824cc3d1077 --uv V1.0.0
+      run: node deploy.js
+      # run: yarn miniprogram-ci preview --pp ./dist/ --pkp ./private.key --appid wxc326b824cc3d1077 --uv V1.0.0
