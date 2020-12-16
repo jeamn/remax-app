@@ -31,7 +31,7 @@ jobs:
     # 从 secrets.UPLOAD_PRIVATE_KEY 生成私钥文件
     # see Project/Settings/Secrets
     - name: Generate private key for upload
-      run: echo "$UPLOAD_PRIVATE_KEY" > private.key
+      run: echo "$WXAPP_PRIVATE_KEY" > private.key
       env:
         WXAPP_PRIVATE_KEY: ${{ secrets.WXAPP_PRIVATE_KEY }}
     # 上传代码
