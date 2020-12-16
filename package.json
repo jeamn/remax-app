@@ -8,8 +8,10 @@
   "author": "chenjingming <chenjingming@300.cn>",
   "license": "MIT",
   "scripts": {
-    "dev": "remax build -t wechat -w",
-    "build": "cross-env NODE_ENV=production remax build -t wechat",
+    "dev": "cross-env remax build -t wechat -w",
+    "build": " remax build -t wechat",
+    "build:dev": "cross-env NODE_ENV=development yarn build",
+    "build:prod": "cross-env NODE_ENV=production yarn build",
     "deploy": "node deploy.js"
   },
   "dependencies": {
