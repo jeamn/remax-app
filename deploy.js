@@ -16,11 +16,13 @@ function envDeal(env){
     privateKeyPath: './private.key',
     ignores: ['node_modules/**/*'],
   })
+  const envConfig = envDeal(process.env.HOTEL_APP_ENV)
+  const isProd = process.env.HOTEL_APP_ENV === 'production'
   try {
     await ci.preview({
       project,
-      robot: envDeal(process.env.HOTEL_APP_ENV).robot,
-      desc: `零壹酒店 / ${process.env.HOTEL_APP_ENV} ${envDeal(process.env.HOTEL_APP_ENV).env} / 版本号: V${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
+      robot: envConfig.robot,
+      desc: `零壹酒店 / ${process.env.HOTEL_APP_ENV} ${envConfig.env} / 版本号: V${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
       setting: {
         es6: true,
       },
@@ -30,6 +32,17 @@ function envDeal(env){
       // pagePath: 'pages/index/index', // 预览页面
       // searchQuery: 'a=1&b=2',   // 预览参数 [注意!]这里的`&`字符在命令行中应写成转义字符`\&`
     })
+    if(isProd){
+      await ci.upload({
+        project,
+        version: `${pkg.version}`,
+        desc: '零壹酒店',
+        setting: {
+          es6: true,
+        },
+        onProgressUpdate: console.log,
+      })
+    }
   } catch (err) {
     console.log('err', err)
   }
