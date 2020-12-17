@@ -3,9 +3,6 @@ import { View, Text, Image } from 'remax/wechat';
 import styles from './index.css';
 
 export default class App extends React.Component {
-  componentDidMount() {
-    console.log(process.env.NODE_ENV)
-  };
   render(){
     return (
       <View className={styles.app}>
@@ -16,7 +13,7 @@ export default class App extends React.Component {
             alt="logo"
           />
           <View className={styles.text}>
-            当前环境：{process.env.HOTEL_APP_ENV}
+            当前环境：{process.env.NODE_ENV}
           </View>
         </View>
       </View>

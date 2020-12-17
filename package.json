@@ -8,14 +8,14 @@
   "author": "chenjingming <chenjingming@300.cn>",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development remax build -t wechat -w",
-    "build": "cross-env NODE_ENV=production remax build -t wechat",
-    "build:dev": "cross-env HOTEL_APP_ENV=development yarn build",
-    "build:prod": "cross-env HOTEL_APP_ENV=production yarn build",
-    "build:release": "cross-env HOTEL_APP_ENV=release yarn build",
-    "deploy:dev": "cross-env HOTEL_APP_ENV=development node deploy.js",
-    "deploy:prod": "cross-env HOTEL_APP_ENV=production node deploy.js",
-    "deploy:release": "cross-env HOTEL_APP_ENV=release node deploy.js"
+    "dev": "remax build -t wechat -w",
+    "build": "remax build -t wechat",
+    "build:dev": "cross-env NODE_ENV=development yarn build",
+    "build:prod": "cross-env NODE_ENV=production yarn build",
+    "build:release": "cross-env NODE_ENV=release yarn build",
+    "deploy:dev": "cross-env NODE_ENV=development node deploy.js",
+    "deploy:prod": "cross-env NODE_ENV=production node deploy.js",
+    "deploy:release": "cross-env NODE_ENV=release node deploy.js"
   },
   "dependencies": {
     "miniprogram-ci": "^1.0.94",
