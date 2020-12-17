@@ -2,9 +2,9 @@ const ci = require('miniprogram-ci')
 const pkg = require('./package.json')
 function envDeal(env){
   switch(env) {
-    case 'production': return '生产环境';
-    case 'development': return '开发环境';
-    case 'release': return '测试环境';
+    case 'production': return {env: '生产环境', robot: 1};
+    case 'development': return {env: '开发环境', robot: 2};
+    case 'release': return {env: '测试环境', robot: 3};
     default: break;
   }
 }
@@ -19,8 +19,8 @@ function envDeal(env){
   try {
     await ci.preview({
       project,
-      robot: 2,
-      desc: `零壹酒店 ${process.env.HOTEL_APP_ENV} ${envDeal(process.env.HOTEL_APP_ENV)}/ ${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
+      robot: envDeal(process.env.HOTEL_APP_ENV).robot,
+      desc: `零壹酒店 / ${process.env.HOTEL_APP_ENV} ${envDeal(process.env.HOTEL_APP_ENV).env} / 版本号：${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
       setting: {
         es6: true,
       },
