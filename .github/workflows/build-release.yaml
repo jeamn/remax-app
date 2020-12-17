@@ -1,8 +1,8 @@
-name: hotel-sp-wxapp-master
+name: hotel-sp-wxapp-release
 
 on:
   push:
-    branches: [ master ]
+    branches: [ release ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       run: yarn
 
     - name: Build weapp
-      run: yarn build:prod
+      run: yarn build:release
 
     - name: Generate private key for upload
       run: echo "$WXAPP_PRIVATE_KEY" > private.key
@@ -32,5 +32,5 @@ jobs:
         WXAPP_PRIVATE_KEY: ${{ secrets.WXAPP_PRIVATE_KEY }}
 
     - name: Preview to generate QR code
-      run: deploy:prod
+      run: deploy:release
       # run: yarn miniprogram-ci preview --pp ./dist/ --pkp ./private.key --appid wxc326b824cc3d1077 --uv V1.0.0
