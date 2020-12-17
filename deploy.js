@@ -42,6 +42,11 @@ function envDeal(env){
         },
         onProgressUpdate: console.log,
       })
+      await ci.getDevSourceMap({
+        project,
+        robot: envConfig.robot,
+        sourceMapSavePath: './sm.zip'
+      })
     }
   } catch (err) {
     console.log('err', err)
