@@ -20,7 +20,7 @@ function envDeal(env){
     await ci.preview({
       project,
       robot: envDeal(process.env.HOTEL_APP_ENV).robot,
-      desc: `零壹酒店 / ${process.env.HOTEL_APP_ENV} ${envDeal(process.env.HOTEL_APP_ENV).env} / 版本号：${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
+      desc: `零壹酒店 / ${process.env.HOTEL_APP_ENV} ${envDeal(process.env.HOTEL_APP_ENV).env} / 版本号: V${pkg.version}`, // 此备注将显示在“小程序助手”开发版列表中
       setting: {
         es6: true,
       },
