@@ -16,7 +16,7 @@ export default class App extends React.Component {
             alt="logo"
           />
           <View className={styles.text}>
-            当前环境：{process.env.NODE_ENV}
+            当前环境：{process.env.HOTEL_APP_ENV}
           </View>
         </View>
       </View>
