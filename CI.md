@@ -10,7 +10,7 @@
 ```
 npm install miniprogram-ci --save
 ```
-#### （3）编写构建脚本
+#### （3）预览操作
 ```js
 const ci = require('miniprogram-ci')
 const pkg = require('./package.json')
@@ -48,5 +48,64 @@ function envDeal(env){
     console.log('err', err)
   }
 })()
+```
+#### （4）上传操作和 source-map 下载
+```js
+if(isProd){
+  await ci.upload({
+    project,
+    version: `${pkg.version}`,
+    desc: '零壹酒店',
+    setting: {
+      es6: true,
+    },
+    onProgressUpdate: console.log,
+  })
+  await ci.getDevSourceMap({
+    project,
+    robot: envConfig.robot,
+    sourceMapSavePath: './sm.zip'
+  })
+}
+```
+
+### 3、github action 相关配置
+```yaml
+name: hotel-sp-wxapp-master
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: yarn
+
+    - name: Build weapp
+      run: yarn build:prod
+
+    - name: Generate private key for upload
+      run: echo "$WXAPP_PRIVATE_KEY" > private.key
+      env:
+        WXAPP_PRIVATE_KEY: ${{ secrets.WXAPP_PRIVATE_KEY }}
+
+    - name: Preview to generate QR code
+      run: yarn deploy:prod
+      # run: yarn miniprogram-ci preview --pp ./dist/ --pkp ./private.key --appid wxc326b824cc3d1077 --uv V1.0.0
 ```
 
